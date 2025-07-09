@@ -1,0 +1,16 @@
+
+
+CREATE FILTER MODULE ExampleFileIteratorFlow_Filter
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE MyDateVariable1 DATE CAST(LocalEnvironment.Destination.File.LastModified AS DATE);
+		DECLARE MyDateVariable2 DATE CAST(CURRENT_GMTTIMESTAMP AS DATE);
+		IF (MyDateVariable1 < MyDateVariable2) THEN
+			-- This means the file was last modified before today's date
+			RETURN TRUE;
+		ELSE
+			-- This means the file was last modified on today's date
+			RETURN FALSE;
+		END IF;
+	END;
+END MODULE;
