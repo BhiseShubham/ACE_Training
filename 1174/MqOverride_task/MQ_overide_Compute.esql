@@ -1,0 +1,39 @@
+
+
+
+
+
+
+CREATE COMPUTE MODULE MQ_overide_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot.MQMD = InputRoot.MQMD;
+
+		SET OutputRoot.JSON.Data.root = InputRoot.XMLNSC;
+		--SET OutputLocalEnvironment.Destination.MQ.DestinationData[1].queueName = 'output2';
+		--SET OutputLocalEnvironment.Destination.MQ.DestinationData[2].queueName = 'output3';
+
+		SET OutputRoot.MQMD.ReplyToQ = 'output2';
+		propagate TO TERMINAL 'out';
+
+		SET OutputRoot.MQMD.ReplyToQ = 'output2';
+		SET OutputRoot.JSON.Data.root = InputRoot.XMLNSC;
+
+	END;
+END MODULE;
