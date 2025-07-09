@@ -1,10 +1,10 @@
 
 
-CREATE COMPUTE MODULE testMf_Compute
+CREATE COMPUTE MODULE mqmsg_Compute
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
 		-- CALL CopyMessageHeaders();
-		CALL CopyEntireMessage();
+		   CALL CopyEntireMessage();
 		RETURN TRUE;
 	END;
 
@@ -18,7 +18,11 @@ CREATE COMPUTE MODULE testMf_Compute
 		END WHILE;
 	END;
 
-	CREATE PROCEDURE CopyEntireMessage() BEGIN
-		SET OutputRoot = InputRoot;
+	CREATE PROCEDURE CopyEntireMessage() 
+	BEGIN
+		
+		SET OutputRoot.MQMD.Format = "MQFMT_RF_HEADER_2";
+		SET OutputRoot.MQRFH2.psc.Topic = 'MyString';
+		SET OutputRoot.JSON.Data.name = InputRoot.XMLNSC.name;
 	END;
 END MODULE;

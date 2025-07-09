@@ -1,10 +1,10 @@
 
 
-CREATE COMPUTE MODULE MF_File_Compute
+CREATE COMPUTE MODULE exception_handeling_Compute
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
 		-- CALL CopyMessageHeaders();
-		 CALL CopyEntireMessage();
+		CALL CopyEntireMessage();
 		RETURN TRUE;
 	END;
 
@@ -19,6 +19,6 @@ CREATE COMPUTE MODULE MF_File_Compute
 	END;
 
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
-		SET OutputRoot.XMLNSC = InputRoot.JSON.Data.root;
+		SET OutputRoot.JSON.Data = InputRoot.XMLNSC;
 	END;
 END MODULE;
