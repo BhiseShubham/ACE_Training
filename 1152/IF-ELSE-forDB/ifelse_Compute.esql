@@ -1,0 +1,34 @@
+
+
+CREATE COMPUTE MODULE ifelse_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		 CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		DECLARE method CHARACTER;
+		SET method= InputRoot.HTTPInputHeader."X-Original-HTTP-Command";
+		
+		IF method='GET http://localhost:7800/ifelse HTTP/1.1' THEN
+			SET OutputRoot.XMLNSC.Employee.details[] = SELECT * FROM Database.dsn.system.EIDIKO;
+		ELSEIF method='POST http://localhost:7800/ifelse HTTP/1.1' THEN
+			INSERT INTO Database.dsn.system.EIDIKO(NAME,DEPT,AGE) VALUES ('KOHLI','CRICKET',36);
+		ELSE
+			PASSTHRU 'CREATE TABLE ShopCustomers ( CustomerNumber INTEGER, FirstName VARCHAR(256), LastName VARCHAR(256), Street VARCHAR(256), City VARCHAR(256), Country VARCHAR(256))' TO Database.dsn;
+		END IF;
+		
+	END;
+END MODULE;
