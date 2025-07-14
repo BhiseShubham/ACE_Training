@@ -1,5 +1,5 @@
 
-
+DECLARE UDP EXTERNAL CHARACTER '';
 CREATE COMPUTE MODULE delect_operation_Compute
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
@@ -22,7 +22,7 @@ CREATE COMPUTE MODULE delect_operation_Compute
 		--SET OutputRoot = InputRoot;
 
 
-		DELETE FROM Database.shritej.shritej.EMPLOYEES AS i
+		DELETE FROM Database.{UDP}.EMPLOYEES AS i
 		WHERE i.emp_id = InputRoot.XMLNSC.root.EID;
 
 		
