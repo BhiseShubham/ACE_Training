@@ -21,6 +21,7 @@ CREATE COMPUTE MODULE delect_operation_Compute
 	CREATE PROCEDURE CopyEntireMessage() BEGIN
 		--SET OutputRoot = InputRoot;
 
+
 		DELETE FROM Database.shritej.shritej.EMPLOYEES AS i
 		WHERE i.emp_id = InputRoot.XMLNSC.root.EID;
 
