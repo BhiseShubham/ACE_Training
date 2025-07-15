@@ -1,0 +1,30 @@
+
+
+CREATE COMPUTE MODULE insert_operation_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		
+--		DECLARE ch CHARACTER;
+--		SET ch= 'Insert into EMPLOYEES Values(?,?,?,?)';
+--		PASSTHRU(ch,InputRoot.XMLNSC.root.EID,InputRoot.XMLNSC.root.FName,InputRoot.XMLNSC.root.LName,InputRoot.XMLNSC.root.Email);
+
+        INSERT INTO Database.shritej.shritej.EMPLOYEES VALUES (InputRoot.XMLNSC.root.EID,InputRoot.XMLNSC.root.FName,InputRoot.XMLNSC.root.LName,InputRoot.XMLNSC.root.Email );
+ -- database.user.dsn.table
+END;
+END MODULE;
