@@ -1,0 +1,30 @@
+
+
+CREATE COMPUTE MODULE fileNodes_mf_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		 CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET Environment.Compute1 = InputRoot.JSON.Data;
+	END;
+END MODULE;
+
+CREATE COMPUTE MODULE fileNodes_ReadCompute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		 CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot.XMLNSC.Root.Res1 = Environment.Compute1;
+		SET OutputRoot.XMLNSC.Root.Res2 = InputRoot.JSON.Data;
+	END;
+END MODULE;
