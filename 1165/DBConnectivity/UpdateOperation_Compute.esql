@@ -1,0 +1,19 @@
+
+
+CREATE COMPUTE MODULE UpdateOperation_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE NAME CHARACTER;
+		DECLARE EMPID CHARACTER;
+		
+		SET NAME = InputLocalEnvironment.HTTP.Input.QueryString.name;
+		SET EMPID = InputLocalEnvironment.HTTP.Input.QueryString.empid;
+		
+		PASSTHRU 'UPDATE empdetails SET NAME = ? WHERE EMPID = ?' TO DataSource.DBDSN VALUES(NAME,EMPID);
+		
+		SET OutputRoot.XMLNSC.MESSAGE = 'DATA UPDATED SUCCESSFULLY';
+	END;
+END MODULE;
+
+
+

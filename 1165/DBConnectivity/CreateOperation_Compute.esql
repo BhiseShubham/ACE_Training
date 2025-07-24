@@ -1,0 +1,24 @@
+
+
+CREATE COMPUTE MODULE CreateOperation_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		DECLARE EMPID CHARACTER;
+		DECLARE NAME CHARACTER;
+		DECLARE ROLE CHARACTER;
+		DECLARE DEPARTMENT CHARACTER;
+		
+		SET EMPID = InputLocalEnvironment.HTTP.Input.QueryString.empid;
+		SET NAME = InputLocalEnvironment.HTTP.Input.QueryString.name;
+		SET ROLE = InputLocalEnvironment.HTTP.Input.QueryString.role;
+		SET DEPARTMENT = InputLocalEnvironment.HTTP.Input.QueryString.department;
+		
+		
+		
+		PASSTHRU 'INSERT INTO empdetails values (?,?,?,?)' TO DataSource.DBDSN VALUES(EMPID,NAME,ROLE,DEPARTMENT);
+				
+		SET OutputRoot.XMLNSC.MESSAGE = 'DATA INSERTED SUCCESSFULLY';
+	
+	END;
+END MODULE;

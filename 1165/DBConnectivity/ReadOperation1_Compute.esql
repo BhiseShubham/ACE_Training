@@ -1,0 +1,21 @@
+
+
+CREATE COMPUTE MODULE ReadOperation1_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		DECLARE EMPID INTEGER;
+		SET EMPID = InputLocalEnvironment.HTTP.Input.QueryString.empid;
+		
+		DECLARE EMP ROW;
+		
+		SET EMP = PASSTHRU('SELECT * FROM empdetails WHERE EMPID=?' TO DataSource.DBDSN VALUES(EMPID));
+				
+		SET OutputRoot.XMLNSC.EmpDetails.EmpID = EMP.EMPID;
+		SET OutputRoot.XMLNSC.EmpDetails.Name = EMP.NAME;
+		SET OutputRoot.XMLNSC.EmpDetails.Role = EMP.ROLE;
+		SET OutputRoot.XMLNSC.EmpDetails.Department = EMP.DEPARTMENT;
+		RETURN TRUE;
+	END;
+
+END MODULE;
